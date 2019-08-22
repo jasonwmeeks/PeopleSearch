@@ -1,0 +1,31 @@
+<div class="example-container mat-elevation-z8">
+  <div class="example-loading-shade"
+       *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+  <div class="button-row">
+    <a mat-flat-button color="primary" [routerLink]="['/list-people']"><mat-icon>list</mat-icon></a>
+  </div>
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title><h2>ID: {{person.id}}</h2></mat-card-title>
+      <mat-card-subtitle>Full Name: {{person.fullName}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <dl>
+        <dt>Age:</dt>
+        <dd>{{person.age}}</dd>
+        <dt>Address:</dt>
+        <dd>{{person.address}}</dd>
+        <dt>Interests:</dt>
+        <dd>{{person.interests}}</dd>
+        <dt>Picture:</dt>
+        <dd><img src="assets/images/{{person.picturePath}}"></dd>
+      </dl>
+    </mat-card-content>
+    <mat-card-actions>
+      <a mat-flat-button color="primary" [routerLink]="['/person-edit/', person.id || 'all']"><mat-icon>edit</mat-icon></a>
+      <a mat-flat-button color="warn" (click)="deleteperson(person.id)"><mat-icon>delete</mat-icon></a>
+    </mat-card-actions>
+  </mat-card>
+</div>
