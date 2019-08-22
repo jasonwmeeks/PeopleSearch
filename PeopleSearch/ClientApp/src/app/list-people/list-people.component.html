@@ -1,4 +1,8 @@
-
+<form (ngSubmit)="onSubmit(ref.value)">
+  <div class="md-form form-group">
+    <input mdbInput type="text" class="form-control" id="term" name="term" #ref>  <button type="submit" mdbBtn color="primary">Search</button>
+  </div>
+</form>
   <div class="example-container mat-elevation-z8">
     <div class="example-loading-shade"
          *ngIf="isLoadingResults">
@@ -6,13 +10,7 @@
     </div>
     <div class="button-row">
       <a mat-flat-button color="primary" [routerLink]="['/add-person']"><mat-icon>add</mat-icon></a>
-    </div><form (ngSubmit)="onSubmit(ref.value)">
-  <div class="md-form form-group">
-    <input mdbInput type="text" class="form-control" id="term" name="term" #ref>  <button type="submit" mdbBtn color="primary">Search</button>
-
-    <label for="q">Search for a Person</label>
-  </div>
-</form>
+    </div>
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="data" class="example-table"
              matSort matSortActive="FullName" matSortDisableClear matSortDirection="asc">

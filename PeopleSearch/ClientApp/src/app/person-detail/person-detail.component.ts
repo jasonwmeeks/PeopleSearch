@@ -13,7 +13,7 @@ export class PersonDetailComponent implements OnInit {
   person: Person = {
     id: null,
     fullName: '',
-    age: '',
+    age: 0,
     address: '',
     interests: '',
     picturePath: ''
