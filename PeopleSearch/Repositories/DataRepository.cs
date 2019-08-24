@@ -15,6 +15,16 @@ namespace PeopleSearch.Repositories
             _context = context;
         }
 
+        public IQueryable<T> GetAll()
+        {
+            return _context.Set<T>();
+        }
+
+        public async Task<T> GetById(int id)
+        {
+            return await _context.Set<T>().FindAsync(id);
+        }
+
         public void Add(T entity)
         {
             _context.Set<T>().Add(entity);

@@ -16,13 +16,11 @@ namespace PeopleSearch.Controllers
     [ApiController]
     public class PeopleController : ControllerBase
     {
-        private readonly PersonContext _context;
         private readonly IMapper _mapper;
         private readonly IDataRepository<Person> _repo;
 
-        public PeopleController(PersonContext context, IMapper mapper, IDataRepository<Person> repo)
+        public PeopleController(IMapper mapper, IDataRepository<Person> repo)
         {
-            _context = context;
             _mapper = mapper;
             _repo = repo;
         }
@@ -31,7 +29,7 @@ namespace PeopleSearch.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Person>>> GetPersons()
         {
-            return await _context.Person.ToListAsync();
+            return await _repo.GetAll().ToListAsync();
         }
 
         // GET: api/<controller>/search/{fullName}
@@ -42,16 +40,18 @@ namespace PeopleSearch.Controllers
             var numSeconds = new Random().Next(5000);
             System.Threading.Thread.Sleep(numSeconds);
 
+            var people = await _repo.GetAll().ToListAsync();
             if (string.IsNullOrEmpty(term))
-                return await _context.Person.ToListAsync();
-            return await _context.Person.Where(x => x.FullName.Contains(term)).ToListAsync();
+                return people;
+            
+            return people.Where(x => x.FullName.Contains(term)).ToList();
         }
 
         // GET: api/People/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Person>> GetPerson(int id)
         {
-            var person = await _context.Person.FindAsync(id);
+            var person = await _repo.GetById(id);
 
             if (person == null)
             {
@@ -97,27 +97,6 @@ namespace PeopleSearch.Controllers
             var personResponse = _mapper.Map<PersonDto>(savePerson);
 
             return StatusCode(201, new { personResponse });
-        }
-
-        //// DELETE: api/People/5
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult<Person>> DeletePerson(int id)
-        //{
-        //    var person = await _context.Person.FindAsync(id);
-        //    if (person == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Person.Remove(person);
-        //    await _context.SaveChangesAsync();
-
-        //    return person;
-        //}
-
-        private bool PersonExists(int id)
-        {
-            return _context.Person.Any(e => e.Id == id);
         }
     }
 }
